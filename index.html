@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mi biblioteca</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div id="login">
+
+<div class="login-box">
+
+<h2>📚 Biblioteca virtual</h2>
+
+<input type="text" id="user" placeholder="Usuario">
+
+<input type="password" id="pass" placeholder="Contraseña">
+
+<button onclick="login()">
+Entrar
+</button>
+
+<div class="link" onclick="mostrarRegistro()">
+Crear cuenta nueva
+</div>
+
+<div class="link" onclick="recuperarCuenta()">
+Olvidé mi usuario o contraseña
+</div>
+
+<p id="errorLogin"></p>
+
+</div>
+
+</div>
+
+<header class="topbar">
+
+<div>
+📚 Mi biblioteca
+</div>
+
+<button class="logout-btn" onclick="cerrarSesion()">
+Salir
+</button>
+
+</header>
+
+<div class="container">
+
+<div class="banner-anime">
+
+<h1>📚 Biblioteca Virtual</h1>
+
+<p>
+Lee mangas, novelas, poemas y webtoons
+</p>
+
+</div>
+
+<div id="inicio">
+
+<div class="card">
+
+<h3>Buscar libro</h3>
+
+<input
+type="text"
+id="busqueda"
+class="buscador"
+placeholder="Buscar por título..."
+onkeyup="buscarLibro()">
+
+</div>
+
+<div class="card">
+
+<h3>Buscar por categoría</h3>
+
+<div class="categorias-grid">
+
+<button onclick="filtrar('Todos')">Todos</button>
+<button onclick="filtrar('Romance')">Romance</button>
+<button onclick="filtrar('Terror')">Terror</button>
+<button onclick="filtrar('Comedia')">Comedia</button>
+<button onclick="filtrar('Acción')">Acción</button>
+<button onclick="filtrar('Drama')">Drama</button>
+<button onclick="filtrar('Fantasía')">Fantasía</button>
+<button onclick="filtrar('Comic')">Comic</button>
+<button onclick="filtrar('Manga')">Manga</button>
+<button onclick="filtrar('Anime')">Anime</button>
+<button onclick="filtrar('Poemas')">Poemas</button>
+
+</div>
+
+</div>
+
+<div id="lista"></div>
+
+</div>
+
+<div id="leer" class="hidden">
+
+<button onclick="mostrar('inicio')">
+⬅ Volver
+</button>
+
+<div id="contenidoLibro" class="lector"></div>
+
+</div>
+
+<div id="escribir" class="hidden">
+
+<div class="card">
+
+<h3>Crear libro</h3>
+
+<input id="tituloLibro" placeholder="Título">
+
+<div id="categorias">
+
+<label><input type="checkbox" value="Romance"> Romance</label><br>
+<label><input type="checkbox" value="Terror"> Terror</label><br>
+<label><input type="checkbox" value="Comedia"> Comedia</label><br>
+<label><input type="checkbox" value="Acción"> Acción</label><br>
+<label><input type="checkbox" value="Drama"> Drama</label><br>
+<label><input type="checkbox" value="Fantasía"> Fantasía</label><br>
+<label><input type="checkbox" value="Comic"> Comic</label><br>
+<label><input type="checkbox" value="Manga"> Manga</label><br>
+<label><input type="checkbox" value="Anime"> Anime</label><br>
+<label><input type="checkbox" value="Poemas"> Poemas</label><br>
+
+</div>
+
+<input type="file" id="portada">
+
+<button onclick="crearLibro()">
+Crear
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>Mis libros</h3>
+
+<div id="misLibros"></div>
+
+</div>
+
+<div id="editor" class="card hidden">
+
+<h3 id="tituloEditor"></h3>
+
+<input id="tituloCap" placeholder="Capítulo">
+
+<textarea
+id="textoCap"
+placeholder="Escribe tu capítulo aquí..."
+oninput="contarPalabras()"></textarea>
+
+<div class="contador" id="contadorPalabras">
+0 / 500 palabras
+</div>
+
+<input type="file" id="imgCap" multiple>
+
+<button onclick="guardarCap()">
+Guardar capítulo
+</button>
+
+<h4>Capítulos</h4>
+
+<div id="caps"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="nav">
+
+<button onclick="mostrar('inicio')">🏠</button>
+
+<button onclick="mostrar('leer')">📖</button>
+
+<button onclick="mostrar('escribir')">✍️</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
