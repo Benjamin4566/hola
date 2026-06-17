@@ -1,196 +1,199 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mi biblioteca</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Biblioteca Virtual</title>
 
-<link rel="stylesheet" href="style.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="login">
+    <div id="login">
+        <div class="login-box">
 
-<div class="login-box">
+            <h2>📚 Biblioteca Virtual</h2>
 
-<h2>📚 Biblioteca virtual</h2>
+            <input type="text" id="user" placeholder="Usuario">
 
-<input type="text" id="user" placeholder="Usuario">
+            <input type="password" id="pass" placeholder="Contraseña">
 
-<input type="password" id="pass" placeholder="Contraseña">
+            <button onclick="login()">
+                Entrar
+            </button>
 
-<button onclick="login()">
-Entrar
-</button>
+            <div class="link" onclick="mostrarRegistro()">
+                Crear cuenta nueva
+            </div>
 
-<div class="link" onclick="mostrarRegistro()">
-Crear cuenta nueva
-</div>
+            <div class="link" onclick="recuperarCuenta()">
+                Olvidé mi usuario o contraseña
+            </div>
 
-<div class="link" onclick="recuperarCuenta()">
-Olvidé mi usuario o contraseña
-</div>
+            <p id="errorLogin"></p>
 
-<p id="errorLogin"></p>
+        </div>
+    </div>
 
-</div>
+    <header class="topbar">
 
-</div>
+        <div>
+            📚 Mi biblioteca
+        </div>
 
-<header class="topbar">
+        <button class="logout-btn" onclick="cerrarSesion()">
+            Salir
+        </button>
 
-<div>
-📚 Mi biblioteca
-</div>
+    </header>
 
-<button class="logout-btn" onclick="cerrarSesion()">
-Salir
-</button>
+    <div class="container">
 
-</header>
+        <div class="banner-anime">
 
-<div class="container">
+            <h1>📚 Biblioteca Virtual</h1>
 
-<div class="banner-anime">
+            <p>
+                Lee mangas, novelas, poemas y webtoons
+            </p>
 
-<h1>📚 Biblioteca Virtual</h1>
+        </div>
 
-<p>
-Lee mangas, novelas, poemas y webtoons
-</p>
+        <div id="inicio">
 
-</div>
+            <div class="card">
 
-<div id="inicio">
+                <h3>Buscar libro</h3>
 
-<div class="card">
+                <input
+                    type="text"
+                    id="busqueda"
+                    class="buscador"
+                    placeholder="Buscar por título..."
+                    onkeyup="buscarLibro()">
 
-<h3>Buscar libro</h3>
+            </div>
 
-<input
-type="text"
-id="busqueda"
-class="buscador"
-placeholder="Buscar por título..."
-onkeyup="buscarLibro()">
+            <div class="card">
 
-</div>
+                <h3>Buscar por categoría</h3>
 
-<div class="card">
+                <div class="categorias-grid">
 
-<h3>Buscar por categoría</h3>
+                    <button onclick="filtrar('Todos')">Todos</button>
+                    <button onclick="filtrar('Romance')">Romance</button>
+                    <button onclick="filtrar('Terror')">Terror</button>
+                    <button onclick="filtrar('Comedia')">Comedia</button>
+                    <button onclick="filtrar('Acción')">Acción</button>
+                    <button onclick="filtrar('Drama')">Drama</button>
+                    <button onclick="filtrar('Fantasía')">Fantasía</button>
+                    <button onclick="filtrar('Comic')">Comic</button>
+                    <button onclick="filtrar('Manga')">Manga</button>
+                    <button onclick="filtrar('Anime')">Anime</button>
+                    <button onclick="filtrar('Poemas')">Poemas</button>
 
-<div class="categorias-grid">
+                </div>
 
-<button onclick="filtrar('Todos')">Todos</button>
-<button onclick="filtrar('Romance')">Romance</button>
-<button onclick="filtrar('Terror')">Terror</button>
-<button onclick="filtrar('Comedia')">Comedia</button>
-<button onclick="filtrar('Acción')">Acción</button>
-<button onclick="filtrar('Drama')">Drama</button>
-<button onclick="filtrar('Fantasía')">Fantasía</button>
-<button onclick="filtrar('Comic')">Comic</button>
-<button onclick="filtrar('Manga')">Manga</button>
-<button onclick="filtrar('Anime')">Anime</button>
-<button onclick="filtrar('Poemas')">Poemas</button>
+            </div>
 
-</div>
+            <div id="lista"></div>
 
-</div>
+        </div>
 
-<div id="lista"></div>
+        <div id="leer" class="hidden">
 
-</div>
+            <button onclick="mostrar('inicio')">
+                ⬅ Volver
+            </button>
 
-<div id="leer" class="hidden">
+            <div id="contenidoLibro" class="lector"></div>
 
-<button onclick="mostrar('inicio')">
-⬅ Volver
-</button>
+        </div>
 
-<div id="contenidoLibro" class="lector"></div>
+        <div id="escribir" class="hidden">
 
-</div>
+            <div class="card">
 
-<div id="escribir" class="hidden">
+                <h3>Crear libro</h3>
 
-<div class="card">
+                <input id="tituloLibro" placeholder="Título">
 
-<h3>Crear libro</h3>
+                <div id="categorias">
 
-<input id="tituloLibro" placeholder="Título">
+                    <label><input type="checkbox" value="Romance"> Romance</label><br>
+                    <label><input type="checkbox" value="Terror"> Terror</label><br>
+                    <label><input type="checkbox" value="Comedia"> Comedia</label><br>
+                    <label><input type="checkbox" value="Acción"> Acción</label><br>
+                    <label><input type="checkbox" value="Drama"> Drama</label><br>
+                    <label><input type="checkbox" value="Fantasía"> Fantasía</label><br>
+                    <label><input type="checkbox" value="Comic"> Comic</label><br>
+                    <label><input type="checkbox" value="Manga"> Manga</label><br>
+                    <label><input type="checkbox" value="Anime"> Anime</label><br>
+                    <label><input type="checkbox" value="Poemas"> Poemas</label><br>
 
-<div id="categorias">
+                </div>
 
-<label><input type="checkbox" value="Romance"> Romance</label><br>
-<label><input type="checkbox" value="Terror"> Terror</label><br>
-<label><input type="checkbox" value="Comedia"> Comedia</label><br>
-<label><input type="checkbox" value="Acción"> Acción</label><br>
-<label><input type="checkbox" value="Drama"> Drama</label><br>
-<label><input type="checkbox" value="Fantasía"> Fantasía</label><br>
-<label><input type="checkbox" value="Comic"> Comic</label><br>
-<label><input type="checkbox" value="Manga"> Manga</label><br>
-<label><input type="checkbox" value="Anime"> Anime</label><br>
-<label><input type="checkbox" value="Poemas"> Poemas</label><br>
+                <input type="file" id="portada">
 
-</div>
+                <button onclick="crearLibro()">
+                    Crear
+                </button>
 
-<input type="file" id="portada">
+            </div>
 
-<button onclick="crearLibro()">
-Crear
-</button>
+            <div class="card">
 
-</div>
+                <h3>Mis libros</h3>
 
-<div class="card">
+                <div id="misLibros"></div>
 
-<h3>Mis libros</h3>
+            </div>
 
-<div id="misLibros"></div>
+            <div id="editor" class="card hidden">
 
-</div>
+                <h3 id="tituloEditor"></h3>
 
-<div id="editor" class="card hidden">
+                <input id="tituloCap" placeholder="Capítulo">
 
-<h3 id="tituloEditor"></h3>
+                <textarea
+                    id="textoCap"
+                    placeholder="Escribe tu capítulo aquí..."
+                    oninput="contarPalabras()"></textarea>
 
-<input id="tituloCap" placeholder="Capítulo">
+                <div class="contador" id="contadorPalabras">
+                    0 / 500 palabras
+                </div>
 
-<textarea id="textoCap"
-placeholder="Escribe tu capítulo aquí..."
-oninput="contarPalabras()"></textarea>
+                <input type="file" id="imgCap" multiple>
 
-<div class="contador" id="contadorPalabras">
-0 / 500 palabras
-</div>
+                <button onclick="guardarCap()">
+                    Guardar capítulo
+                </button>
 
-<input type="file" id="imgCap" multiple>
+                <h4>Capítulos</h4>
 
-<button onclick="guardarCap()">
-Guardar capítulo
-</button>
+                <div id="caps"></div>
 
-<h4>Capítulos</h4>
+            </div>
 
-<div id="caps"></div>
+        </div>
 
-</div>
+    </div>
 
-</div>
+    <div class="nav">
 
-</div>
+        <button onclick="mostrar('inicio')">🏠</button>
 
-<div class="nav">
+        <button onclick="mostrar('leer')">📖</button>
 
-<button onclick="mostrar('inicio')">🏠</button>
+        <button onclick="mostrar('escribir')">✍️</button>
 
-<button onclick="mostrar('leer')">📖</button>
+    </div>
 
-<button onclick="mostrar('escribir')">✍️</button>
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 
-</div>
-
-<script src="script.js"></script>  </body>  
+</body>
 </html>
