@@ -5,8 +5,8 @@ let libroActual = null;
 // SISTEMA DE CUENTAS
 // ======================
 
-if (!localStorage.getItem("cuentaUsuario")) {
-    localStorage.setItem("cuentaUsuario", "admin");
+if (!localStorage.getItem("cuentaUsuarios")) {
+    localStorage.setItem("cuentaUsuarios", "admin");
     localStorage.setItem("cuentaPass", "1234");
 }
 
@@ -16,8 +16,8 @@ if (!localStorage.getItem("cuentaUsuario")) {
 
 function login() {
 
-    const usuario = document.getElementById("user").value;
-    const password = document.getElementById("pass").value;
+    const usuarios = document.getElementById("usuarios").value;
+    const password = document.getElementById("password").value;
 
     fetch("http://localhost:3000/login", {
         method: "POST",
@@ -25,7 +25,7 @@ function login() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            usuario,
+            usuarios,
             password
         })
     })
@@ -54,11 +54,11 @@ function login() {
 
 function mostrarRegistro() {
 
-   const nuevoUsuario = prompt("Nuevo usuario");
-if (!nuevoUsuario) return;
+   const nuevoUsuarios = prompt("Nuevo usuarios");
+if (!nuevoUsuarios) return;
 
-const nuevaPass = prompt("Nueva contraseña");
-if (!nuevaPass) return;
+const nuevapassword = prompt("Nuevo password");
+if (!nuevapassword) return;
 
 fetch("http://localhost:3000/registro", {
     method: "POST",
@@ -66,8 +66,8 @@ fetch("http://localhost:3000/registro", {
         "Content-Type": "application/json"
     },
     body: JSON.stringify({
-        usuario: nuevoUsuario,
-        password: nuevaPass
+        usuarios: nuevoUsuarios,
+        password: nuevapassword
     })
 })
 .then(res => res.json())
@@ -83,19 +83,19 @@ fetch("http://localhost:3000/registro", {
 
 function recuperarCuenta() {
 
-    const usuario =
-        prompt("Nuevo usuario");
+    const usuarios =
+        prompt("Nuevo usuarios");
 
-    if (!usuario) return;
+    if (!usuarios) return;
 
     const pass =
-        prompt("Nueva contraseña");
+        prompt("Nuevo password");
 
     if (!pass) return;
 
     localStorage.setItem(
-        "cuentaUsuario",
-        usuario
+        "cuentaUsuarios",
+        usuarios
     );
 
     localStorage.setItem(
@@ -773,7 +773,7 @@ function mostrarComentarios() {
             </strong>
 
             <p>
-            ${c.usuario}
+            ${c.usuarios}
             </p>
 
             <p>
@@ -828,9 +828,9 @@ function agregarComentario() {
         libroActual
     ].comentarios.push({
 
-        usuario:
+        usuarios:
         localStorage.getItem(
-            "cuentaUsuario"
+            "cuentaUsuarios"
         ),
 
         texto,

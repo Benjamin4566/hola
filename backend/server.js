@@ -29,12 +29,12 @@ app.get("/", (req, res) => {
 
 app.post("/registro", (req, res) => {
 
-    const { usuario, contraseña } = req.body;
+    const { usuarios, password } = req.body;
 
     const sql =
-    "INSERT INTO usuarios (usuario, contraseña) VALUES (?, ?)";
+    "INSERT INTO usuarios (usuarios, password) VALUES (?, ?)";
 
-    db.query(sql, [usuario, contraseña], (err) => {
+    db.query(sql, [usuarios, password], (err) => {
 
         if (err) {
             return res.status(500).json({
@@ -43,7 +43,7 @@ app.post("/registro", (req, res) => {
         }
 
         res.json({
-            mensaje: "Usuario creado correctamente"
+            mensaje: "Usuarios creado correctamente"
         });
 
     });
@@ -52,11 +52,11 @@ app.post("/registro", (req, res) => {
 
 app.post("/login", (req, res) => {
 
-    const { usuario, password } = req.body;
+    const { usuarios, password } = req.body;
 
-    const sql = "SELECT * FROM usuarios WHERE usuarios = ? AND contrasena = ?";
+    const sql = "SELECT * FROM usuarios WHERE usuarios = ? AND password = ?";
 
-    db.query(sql, [usuario, password], (err, result) => {
+    db.query(sql, [usuarios, password], (err, result) => {
 
         if (err) {
             console.error("Error SQL:",err);
@@ -74,7 +74,7 @@ app.post("/login", (req, res) => {
         } else {
             res.json({
                 success: false,
-                mensaje: "Usuario o contraseña incorrectos"
+                mensaje: "Usuarios o password incorrectos"
             });
         }
 
