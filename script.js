@@ -1,8 +1,4 @@
-// ======================
-// VARIABLES GLOBALES
-// ======================
-
-let libros = JSON.parse(localStorage.getItem("libros")) || [];
+let libros = [];
 let libroActual = null;
 
 // ======================
@@ -20,39 +16,37 @@ if (!localStorage.getItem("cuentaUsuario")) {
 
 function login() {
 
-    const usuario =
-        document.getElementById("user").value;
+    const usuario = document.getElementById("user").value;
+    const password = document.getElementById("pass").value;
 
-    const password =
-        document.getElementById("pass").value;
+    fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            usuario,
+            password
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
 
-    const usuarioGuardado =
-        localStorage.getItem("cuentaUsuario");
+        if (data.success) {
 
-    const passGuardada =
-        localStorage.getItem("cuentaPass");
+            localStorage.setItem("sesion", "activa");
 
-    if (
-        usuario === usuarioGuardado &&
-        password === passGuardada
-    ) {
+            document.getElementById("login").style.display = "none";
 
-        localStorage.setItem(
-            "sesion",
-            "activa"
-        );
+        } else {
 
-        document.getElementById("login")
-            .style.display = "none";
+            document.getElementById("errorLogin").innerText = data.mensaje;
+        }
 
-    } else {
+    });
 
-        document.getElementById(
-            "errorLogin"
-        ).innerText =
-            "Usuario o contraseña incorrectos";
-    }
 }
+
 
 // ======================
 // REGISTRO
@@ -60,27 +54,27 @@ function login() {
 
 function mostrarRegistro() {
 
-    const nuevoUsuario =
-        prompt("Nuevo usuario");
+   const nuevoUsuario = prompt("Nuevo usuario");
+if (!nuevoUsuario) return;
 
-    if (!nuevoUsuario) return;
+const nuevaPass = prompt("Nueva contraseña");
+if (!nuevaPass) return;
 
-    const nuevaPass =
-        prompt("Nueva contraseña");
+fetch("http://localhost:3000/registro", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        usuario: nuevoUsuario,
+        password: nuevaPass
+    })
+})
+.then(res => res.json())
+.then(data => {
+    alert(data.mensaje);
+});
 
-    if (!nuevaPass) return;
-
-    localStorage.setItem(
-        "cuentaUsuario",
-        nuevoUsuario
-    );
-
-    localStorage.setItem(
-        "cuentaPass",
-        nuevaPass
-    );
-
-    alert("Cuenta creada");
 }
 
 // ======================
@@ -189,17 +183,48 @@ function guardarDatos() {
 
 function renderLibros() {
 
-    const lista =
-        document.getElementById("lista");
+    fetch("http://localhost:3000/libros")
+        .then(res => res.json())
+        .then(data => {
 
-    const misLibros =
-        document.getElementById("misLibros");
+            libros = data;
 
-    if (!lista || !misLibros) return;
+            const lista = document.getElementById("lista");
+            const misLibros = document.getElementById("misLibros");
 
-    lista.innerHTML = "";
-    misLibros.innerHTML = "";
+            if (!lista || !misLibros) return;
+
+            lista.innerHTML = "";
+            misLibros.innerHTML = "";
+
+            libros.forEach(libro => {
+
+                const portada = libro.portada
+                    ? `<img src="${libro.portada}" alt="${libro.titulo}">`
+                    : "";
+
+                const tarjeta = `
+                    <div class="libro-card">
+                        ${portada}
+                        <h3>${libro.titulo}</h3>
+                        <p>${libro.categorias || ""}</p>
+                        <button onclick="abrirLibro(${libro.id})">
+                            Ver libro
+                        </button>
+                    </div>
+                `;
+
+                lista.innerHTML += tarjeta;
+                misLibros.innerHTML += tarjeta;
+
+            });
+
+        })
+        .catch(error => {
+            console.error("Error al cargar libros:", error);
+        });
 }
+
 // ======================
 // CREAR LIBRO
 // ======================
@@ -262,46 +287,28 @@ function crearLibro() {
 // AGREGAR LIBRO
 // ======================
 
-function agregarLibro(
-    titulo,
-    portada,
-    categorias
-) {
+function agregarLibro(titulo, portada, categorias) {
 
-    libros.push({
-
-        titulo: titulo,
-
-        portada: portada,
-
-        categorias: categorias,
-
-        caps: [],
-
-        comentarios: []
-
+    fetch("http://localhost:3000/libros", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            titulo: titulo,
+            descripcion: "",
+            portada: portada,
+            categorias: categorias.join(","),
+            autor_id: 1
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.mensaje);
     });
 
-    guardarDatos();
-
-    renderLibros();
-
-    document.getElementById(
-        "tituloLibro"
-    ).value = "";
-
-    document.getElementById(
-        "portada"
-    ).value = "";
-
-    document
-        .querySelectorAll(
-            "#categorias input"
-        )
-        .forEach(c => c.checked = false);
-
-    alert("Libro creado");
 }
+
 
 // ======================
 // MOSTRAR LIBROS
@@ -855,10 +862,6 @@ function borrarComentario(i) {
     leer(libroActual);
 }
 
-// ======================
-// BUSCAR LIBRO
-// ======================
-
 function buscarLibro() {
 
     const texto =
@@ -914,11 +917,6 @@ function buscarLibro() {
         }
     });
 }
-
-// ======================
-// FILTRAR
-// ======================
-
 function filtrar(cat) {
 
     if (
