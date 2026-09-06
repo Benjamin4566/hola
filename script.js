@@ -239,8 +239,13 @@ libros.forEach(libro => {
         <button
             onclick="editarLibro(${libro.id})"
         >
-            ✍️ Editar
-        </button>
+            ✍️ Editar  
+         </button>
+
+         <button onclick="borrarLibro(${libro.id})">
+    🗑️ Borrar
+</button>
+
 
     `;
 
@@ -395,6 +400,7 @@ document .getElementById("guardarCapitulo") .addEventListener("click", function(
 
 
     libroActual.capitulos.push(capitulo);
+    localStorage.setItem("libros",JSON.stringify(libros));
 
 
     document
@@ -519,3 +525,20 @@ libroActual.capitulos.forEach((capitulo, indice) => {
 /* ========================================= INICIO ========================================= */
 mostrarPantalla("inicio");
 mostrarLibros();
+
+
+function borrarLibro(id) {
+    const confirmar = confirm(
+        "seguro que quieres borrar el libro?"
+    );
+    if (!confirmar) {
+        return;
+    }
+    libros = libros.filter(libro =>
+        libro.id !== id);
+        localStorage.setItem("libros",
+            JSON.stringify(libros)
+        );
+        mostrarLibros();
+        alert("libro borrado correctamente crack");
+}
