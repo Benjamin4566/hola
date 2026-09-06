@@ -4,6 +4,93 @@
 let libros =
  JSON.parse(localStorage.getItem("libros" )) || [];
 let libroActual = null;
+/* =========================================
+   SISTEMA DE USUARIOS
+========================================= */
+
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+let usuarioActual = localStorage.getItem("usuarioActual");
+
+/* CREAR CUENTA */
+
+document.getElementById("btnCrearCuenta").addEventListener("click", function() {
+
+    const usuario = prompt("Elige un nombre de usuario:");
+
+    if (!usuario) {
+        return;
+    }
+
+    const contraseña = prompt("Elige una contraseña:");
+
+    if (!contraseña) {
+        return;
+    }
+
+    const usuarioExiste = usuarios.find(
+        u => u.usuario === usuario
+    );
+
+    if (usuarioExiste) {
+        alert("Ese usuario ya existe.");
+        return;
+    }
+
+    usuarios.push({
+        usuario: usuario,
+        contraseña: contraseña
+    });
+
+    localStorage.setItem(
+        "usuarios",
+        JSON.stringify(usuarios)
+    );
+
+    alert("✅ Cuenta creada correctamente. Ahora puedes iniciar sesión.");
+});
+
+
+/* INICIAR SESIÓN */
+
+document.getElementById("btnLogin").addEventListener("click", function() {
+
+    const usuario = document
+        .getElementById("usuarioLogin")
+        .value
+        .trim();
+
+    const contraseña = document
+        .getElementById("contraseñaLogin")
+        .value;
+
+    if (usuario === "" || contraseña === "") {
+        alert("Escribe tu usuario y contraseña.");
+        return;
+    }
+
+    const usuarioEncontrado = usuarios.find(
+        u =>
+            u.usuario === usuario &&
+            u.contraseña === contraseña
+    );
+
+    if (!usuarioEncontrado) {
+        alert("❌ Usuario o contraseña incorrectos.");
+        return;
+    }
+
+    usuarioActual = usuarioEncontrado.usuario;
+
+    localStorage.setItem(
+        "usuarioActual",
+        usuarioActual
+    );
+
+    alert("✅ Bienvenido, " + usuarioActual + " 📚");
+
+    mostrarPantalla("inicio");
+});
+
 /* ========================================= CAMBIO DE PANTALLAS ========================================= */
 function mostrarPantalla(id) {
 const pantallas = document.querySelectorAll(".pantalla");
@@ -19,28 +106,43 @@ if (pantalla) {
 }
 
 }
+function requiereLogin(){
+    if (!usuarioActual){
+        alert("primero debes iniciar sesion bro")
+        mostrarPantalla("login");
+        return false;
+    }
+    return true;
+}
+
 /* ========================================= BOTONES DE NAVEGACIÓN ========================================= */
 document.getElementById("btnInicio").addEventListener("click", function() {
+    if (!requiereLogin()) return;
 mostrarPantalla("inicio");
 
 });
-document.getElementById("btnBiblioteca").addEventListener("click", function() {
-mostrarPantalla("biblioteca");
 
-mostrarLibros();
+document.getElementById("btnBiblioteca").addEventListener("click", function(){
+    if (!requiereLogin())return;
+    mostrarPantalla("biblioteca");
+    mostrarLibros();
+})
 
-});
 document.getElementById("btnCrear").addEventListener("click", function() {
+if (!requiereLogin()) return;
 mostrarPantalla("crear");
 
 });
 document.getElementById("irBiblioteca").addEventListener("click", function() {
+    if (!requiereLogin()) return;
 mostrarPantalla("biblioteca");
 
 mostrarLibros();
 
 });
 document.getElementById("irCrear").addEventListener("click", function() {
+    if (!requiereLogin()) return;
+
 mostrarPantalla("crear");
 
 });
@@ -522,8 +624,13 @@ libroActual.capitulos.forEach((capitulo, indice) => {
 });
 
 }
+
 /* ========================================= INICIO ========================================= */
-mostrarPantalla("inicio");
+if (usuarioActual) {
+    mostrarPantalla("inicio");
+} else {
+    mostrarPantalla("login");
+}
 mostrarLibros();
 
 

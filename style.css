@@ -79,6 +79,7 @@ text-align: center;
 box-shadow: 0 3px 15px rgba(0,0,0,0.08);
 }
 
+
 .bienvenida h1 {
 font-size: 38px;
 margin-bottom: 15px;
@@ -96,6 +97,65 @@ justify-content: center;
 gap: 15px;
 flex-wrap: wrap;
 }
+
+/* ================================
+   LOGIN
+================================ */
+
+.login-box {
+    width: 90%;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.login-box h2 {
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.login-box > button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-box p {
+    margin-top: 20px;
+}
+
+#btnCrearCuenta {
+    border: none;
+    background: none;
+    color: #2196f3;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 16px;
+    padding: 5px;
+}
+
+#mensajeLogin {
+    min-height: 20px;
+    font-weight: bold;
+}
+
 
 /* =========================
 BOTONES
