@@ -275,95 +275,94 @@ mostrarPantalla("biblioteca");
 
 /* ========================================= MOSTRAR LIBROS ========================================= */
 function mostrarLibros() {
-const lista =
-    document.getElementById("listaLibros");
 
+    const filtro = document.getElementById("filtroCategoria").value;
+    const lista = document.getElementById("listaLibros");
 
-lista.innerHTML = "";
+    lista.innerHTML = "";
 
+    const librosFiltrados = libros.filter(libro => {
 
-if (libros.length === 0) {
+        if (filtro === "Todos") {
+            return true;
+        }
 
-    lista.innerHTML = `
-        <p>
-            Todavía no hay libros.
-        </p>
-    `;
+        return Array.isArray(libro.categorias) &&
+               libro.categorias.includes(filtro);
+    });
 
-    return;
-}
-
-
-libros.forEach(libro => {
-
-
-    const tarjeta =
-        document.createElement("div");
-
-
-    tarjeta.className = "libro-card";
-
-
-    let portadaHTML = "";
-
-
-    if (libro.portada) {
-
-        portadaHTML = `
-            <img
-                src="${libro.portada}"
-                alt="${libro.titulo}"
-            >
+    if (librosFiltrados.length === 0) {
+        lista.innerHTML = `
+            <p>
+                No hay libros en esta categoría.
+            </p>
         `;
-
+        return;
     }
 
+    librosFiltrados.forEach(libro => {
 
-    tarjeta.innerHTML = `
+        const tarjeta = document.createElement("div");
 
-        ${portadaHTML}
+        tarjeta.className = "libro-card";
 
-        <h3>
-            ${libro.titulo}
-        </h3>
+        let portadaHTML = "";
 
-        <p>
-            ${libro.descripcion || "Sin descripción"}
-        </p>
+        if (libro.portada) {
+            portadaHTML = `
+                <img
+                    src="${libro.portada}"
+                    alt="${libro.titulo}"
+                >
+            `;
+        }
 
-        <p>
-            ${
-                libro.categorias.length > 0
-                ? libro.categorias.join(", ")
-                : "Sin categoría"
-            }
-        </p>
+        tarjeta.innerHTML = `
 
-        <button
-            onclick="abrirLibro(${libro.id})"
-        >
-            📖 Leer libro
-        </button>
+            ${portadaHTML}
 
-        <button
-            onclick="editarLibro(${libro.id})"
-        >
-            ✍️ Editar  
-         </button>
+            <h3>
+                ${libro.titulo}
+            </h3>
 
-         <button onclick="borrarLibro(${libro.id})">
-    🗑️ Borrar
-</button>
+            <p>
+                ${libro.descripcion || "Sin descripción"}
+            </p>
+
+            <p>
+                ${
+                    Array.isArray(libro.categorias) &&
+                    libro.categorias.length > 0
+                    ? libro.categorias.join(", ")
+                    : "Sin categoría"
+                }
+            </p>
+
+            <button onclick="abrirLibro(${libro.id})">
+                📖 Leer libro
+            </button>
+
+            <button onclick="editarLibro(${libro.id})">
+                ✍️ Editar
+            </button>
+
+            <button onclick="borrarLibro(${libro.id})">
+                🗑️ Borrar
+            </button>
+
+        `;
+
+        lista.appendChild(tarjeta);
+    });
+}
 
 
-    `;
+/* FILTRO DE CATEGORÍAS */
 
-
-    lista.appendChild(tarjeta);
-
+document.getElementById("filtroCategoria").addEventListener("change", function() {
+    mostrarLibros();
 });
 
-}
 /* ========================================= ABRIR LIBRO ========================================= */
 function abrirLibro(id) {
 const libro =
