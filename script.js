@@ -133,6 +133,13 @@ if (!requiereLogin()) return;
 mostrarPantalla("crear");
 
 });
+
+document.getElementById("btnCerrarSesion").addEventListener("click", function() {
+    localStorage.removeItem("usuarioActual");
+    usuarioActual = null;
+    mostrarPantalla("login");
+});
+
 document.getElementById("irBiblioteca").addEventListener("click", function() {
     if (!requiereLogin()) return;
 mostrarPantalla("biblioteca");
